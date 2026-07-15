@@ -1,0 +1,58 @@
+:root { color-scheme: dark; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, "PingFang TC", sans-serif;
+  background: #1c1c1e; color: #f2f2f7;
+  padding: 24px; max-width: 900px; margin: 0 auto;
+}
+header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 20px; }
+h1 { font-size: 22px; margin-bottom: 4px; }
+.sub { color: #98989f; font-size: 13px; }
+.lang-btn {
+  background: #48484a; color: #f2f2f7; border: none; border-radius: 6px;
+  padding: 6px 14px; font-size: 13px; cursor: pointer; flex-shrink: 0;
+}
+.banner {
+  background: #3a2f00; color: #ffd60a; border-radius: 10px;
+  padding: 12px 16px; font-size: 13px; margin-bottom: 16px;
+}
+section { background: #2c2c2e; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+h2 { font-size: 15px; margin-bottom: 4px; }
+.hint { color: #98989f; font-size: 12px; margin-bottom: 10px; }
+.notice-card {
+  background: #1c1c1e; border-radius: 8px; padding: 14px;
+  font-size: 13px; color: #98989f; margin-top: 8px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.notice-card b { color: #ffd60a; }
+.trail-canvas { background: #1c1c1e; border-radius: 8px; display: block; width: 100%; touch-action: none; }
+button {
+  background: #48484a; color: #f2f2f7; border: none; border-radius: 6px;
+  padding: 4px 12px; font-size: 12px; cursor: pointer; margin-top: 8px;
+}
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; height: 220px; }
+.cell {
+  background: #1c1c1e; border-radius: 8px; display: flex;
+  align-items: center; justify-content: center;
+  font-size: 12px; color: #98989f; user-select: none; -webkit-user-select: none;
+}
+.cell.leftdone { background: #1f4d2e; color: #7ee2a0; }
+.cell.bothdone { background: #1e3a5f; color: #8ec9ff; }
+.stats { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 10px; font-size: 13px; }
+.stats b { font-variant-numeric: tabular-nums; }
+.ok { color: #30d158; }
+.forcebar-wrap { background: #1c1c1e; border-radius: 8px; height: 26px; overflow: hidden; position: relative; }
+.forcebar {
+  background: linear-gradient(90deg, #30d158, #ffd60a, #ff453a);
+  height: 100%; width: 100%; transform: scaleX(0); transform-origin: left;
+}
+.force-thresh { position: absolute; top: 0; bottom: 0; left: 33%; width: 2px; background: #f2f2f7aa; }
+.scrollbox {
+  height: 140px; overflow: scroll; background: #1c1c1e; border-radius: 8px;
+  padding: 10px; font-size: 12px; color: #98989f; line-height: 2.2;
+}
+.pinchbox { height: 120px; background: #1c1c1e; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+.pinchtarget {
+  width: 60px; height: 60px; background: #0a84ff; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; font-size: 11px;
+}
