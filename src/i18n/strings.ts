@@ -12,6 +12,7 @@ export const localeNames: Record<Locale, string> = {
 
 export interface Strings {
   pageTitle: string; pageSubtitle: string; langSelectLabel: string; touchBanner: string;
+  deviceSelectLabel: string; deviceBuiltin: string; deviceMagic: string; deviceMagicNote: string;
   trailTitle: string; trailHint: string;
   hzLabel: string; maxJumpLabel: string; jumpCountLabel: string; clearBtn: string;
   gridTitle: string; gridHint: string;
@@ -32,6 +33,10 @@ export const strings: Record<Locale, Strings> = {
     pageSubtitle: '依序做完五關。每一關都在測觸控板的一種故障模式（死區、微動開關、壓力感應、慣性捲動、多指手勢）。',
     langSelectLabel: '介面語言',
     touchBanner: '本工具供 Mac 觸控板檢測，請在 Mac 上用 Safari 開啟。',
+    deviceSelectLabel: '檢測裝置',
+    deviceBuiltin: '內建觸控板',
+    deviceMagic: 'Magic Trackpad',
+    deviceMagicNote: '藍牙外接板的事件頻率可能低於內建板（120Hz 上限不適用），判讀時以標注的裝置類型為準。',
     trailTitle: '1. 軌跡測試 — 找死區與跳動',
     trailHint: '單指掃滿整個觸控板表面，來回蓋滿。畫出的線應該連續平滑：斷線 = 死區。紅色線段 = 速度突變異常（這一步超過 50px 且是前一步的 3 倍以上）——快滑不會誤標，出現紅色代表游標從平順移動中突然瞬移。',
     hzLabel: '事件頻率', maxJumpLabel: '最大單步跳距', jumpCountLabel: '異常跳點', clearBtn: '清除重畫',
@@ -61,6 +66,10 @@ export const strings: Record<Locale, Strings> = {
     pageSubtitle: 'Run all five checks. Each targets one trackpad failure mode (dead zones, click switches, pressure sensing, inertial scrolling, multi-finger gestures).',
     langSelectLabel: 'Language',
     touchBanner: 'This tool checks Mac trackpads — please open it in Safari on a Mac.',
+    deviceSelectLabel: 'Device under test',
+    deviceBuiltin: 'Built-in trackpad',
+    deviceMagic: 'Magic Trackpad',
+    deviceMagicNote: 'Bluetooth external trackpads may report events below the built-in 120Hz cap — interpret results against the labeled device type.',
     trailTitle: '1. Trail — dead zones & cursor jumps',
     trailHint: 'Sweep one finger across the whole trackpad surface until covered. The line should be continuous and smooth: a gap = dead zone. Red segments = velocity anomalies (a step over 50px and 3× the previous step) — fast swipes are not flagged; red means the cursor teleported mid-motion.',
     hzLabel: 'Event rate', maxJumpLabel: 'Max step', jumpCountLabel: 'Anomalies', clearBtn: 'Clear',
@@ -90,6 +99,10 @@ export const strings: Record<Locale, Strings> = {
     pageSubtitle: '5つのチェックを順番に行ってください。それぞれがトラックパッドの故障モード（デッドゾーン、クリックスイッチ、感圧センサー、慣性スクロール、マルチタッチジェスチャー）を検査します。',
     langSelectLabel: '言語',
     touchBanner: 'このツールは Mac のトラックパッド検査用です。Mac の Safari で開いてください。',
+    deviceSelectLabel: '検査デバイス',
+    deviceBuiltin: '内蔵トラックパッド',
+    deviceMagic: 'Magic Trackpad',
+    deviceMagicNote: 'Bluetooth 接続の外付けトラックパッドはイベントレートが内蔵の上限 120Hz を下回ることがあります。判定はデバイス種別の表記を前提にしてください。',
     trailTitle: '1. 軌跡テスト — デッドゾーンとカーソル飛び',
     trailHint: '指1本でトラックパッド全面をまんべんなくなぞってください。線は連続して滑らかなはずです：途切れ＝デッドゾーン。赤い線分＝速度異常（1回の移動量が50pxを超え、直前の3倍以上）——素早いスワイプは誤検出されません。赤が出たら、カーソルが突然飛んだ証拠です。',
     hzLabel: 'イベントレート', maxJumpLabel: '最大移動量', jumpCountLabel: '異常数', clearBtn: 'クリア',

@@ -20,7 +20,7 @@
 
 ### 判讀基準
 
-- 事件頻率：健康值約 90–120 Hz（120 為硬體上限）
+- 事件頻率：**內建觸控板**健康值約 90–120 Hz（120 為硬體上限）；**Magic Trackpad**（藍牙外接）可能低於此範圍，非異常——判讀時以匯出 JSON 的 `裝置類型` 欄位（頁面右上角自選）為準
 - 異常跳點：0 個為正常；紅色代表游標從平順移動中瞬移（快滑不會誤標）
 - 九宮格：左右鍵各 9/9
 - 壓力：最大值應能超過 1.0 並觸發用力點按（量程上限約 3.0）
@@ -52,7 +52,7 @@ When done, press "Copy results": a JSON report is copied to the clipboard (and d
 
 ### Interpretation baseline
 
-- Event rate: ~90–120 Hz is healthy (120 is the hardware cap)
+- Event rate: **built-in trackpad** ~90–120 Hz is healthy (120 is the hardware cap); **Magic Trackpad** (Bluetooth) may report lower — not a fault. Interpret against the exported `裝置類型` (device type) field, selectable at the top right of the page
 - Anomalies: 0 is normal; red means the cursor teleported mid-motion (fast swipes are not flagged)
 - Grid: 9/9 for both left and right clicks
 - Pressure: max should exceed 1.0 and trigger a force click (range tops out near 3.0)
