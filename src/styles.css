@@ -18,7 +18,8 @@
   --cell-left-text: #7ee2a0;
   --cell-both-bg: #1e3a5f;
   --cell-both-text: #8ec9ff;
-  --thresh: rgba(242, 242, 247, 0.67);
+  --on-accent: #f2f2f7;
+  --thresh: #f2f2f7aa;
 }
 
 @media (prefers-color-scheme: light) {
@@ -27,9 +28,9 @@
     --card: #ffffff;
     --inset: #e5e5ea;
     --text: #1c1c1e;
-    --text-dim: #6e6e73;
-    --blue: #007aff;
-    --green: #248a3d;
+    --text-dim: #5a5a5f;
+    --blue: #0071e3;
+    --green: #1d7a3d;
     --red: #d70015;
     --yellow: #b25000;
     --btn-bg: #d1d1d6;
@@ -40,7 +41,8 @@
     --cell-left-text: #1d7a3d;
     --cell-both-bg: #d6e9ff;
     --cell-both-text: #1d5fa0;
-    --thresh: rgba(28, 28, 30, 0.67);
+    --on-accent: #ffffff;
+    --thresh: #1c1c1eaa;
   }
 }
 
@@ -100,5 +102,5 @@ button {
 .pinchtarget {
   width: 60px; height: 60px; background: var(--blue); border-radius: 12px;
   display: flex; align-items: center; justify-content: center; font-size: 11px;
-  color: #ffffff;
+  color: var(--on-accent);
 }
