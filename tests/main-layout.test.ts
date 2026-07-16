@@ -19,6 +19,39 @@ describe('renderApp', () => {
     expect(session.skipped.sort()).toEqual(['force', 'pinch']);
   });
 
+  it('裝置選單：預設 builtin、切 magic 寫入 session 並顯示藍牙提示', () => {
+    const root = document.createElement('div');
+    document.body.appendChild(root);
+    const session = new Session();
+    renderApp(root, session, { forceTouch: true, gesture: true, touchDevice: false });
+    const device = root.querySelector('#device-select') as HTMLSelectElement;
+    expect(device).not.toBeNull();
+    expect(device.value).toBe('builtin');
+    expect(session.deviceType).toBe('builtin');
+    const note = root.querySelector('#device-note') as HTMLElement;
+    expect(note.hidden).toBe(true);
+
+    device.value = 'magic';
+    device.dispatchEvent(new Event('change', { bubbles: true }));
+    expect(session.deviceType).toBe('magic');
+    expect(note.hidden).toBe(false);
+
+    device.value = 'builtin';
+    device.dispatchEvent(new Event('change', { bubbles: true }));
+    expect(session.deviceType).toBe('builtin');
+    expect(note.hidden).toBe(true);
+  });
+
+  it('render 前已選 magic：選單與提示初始狀態同步（verify #3 R1 blocking）', () => {
+    const root = document.createElement('div');
+    document.body.appendChild(root);
+    const session = new Session();
+    session.deviceType = 'magic';
+    renderApp(root, session, { forceTouch: true, gesture: true, touchDevice: false });
+    expect((root.querySelector('#device-select') as HTMLSelectElement).value).toBe('magic');
+    expect((root.querySelector('#device-note') as HTMLElement).hidden).toBe(false);
+  });
+
   it('觸控裝置顯示 banner', () => {
     const root = document.createElement('div');
     document.body.appendChild(root);

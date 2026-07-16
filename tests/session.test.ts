@@ -42,6 +42,20 @@ describe('Session / buildExport', () => {
     expect(out['手勢']['最後縮放']).toBe(2.28);
   });
 
+  it('deviceType 預設 builtin，匯出 裝置類型 欄位', () => {
+    const s = new Session();
+    expect(s.deviceType).toBe('builtin');
+    const out = buildExport(s, META) as Record<string, any>;
+    expect(out['裝置類型']).toBe('builtin');
+  });
+
+  it('deviceType 切換 magic 後匯出正確', () => {
+    const s = new Session();
+    s.deviceType = 'magic';
+    const out = buildExport(s, META) as Record<string, any>;
+    expect(out['裝置類型']).toBe('magic');
+  });
+
   it('language 欄位跟隨 meta（ja 案例，verify R1 覆蓋缺口）', () => {
     const out = buildExport(new Session(), { ...META, language: 'ja' }) as Record<string, any>;
     expect(out['language']).toBe('ja');

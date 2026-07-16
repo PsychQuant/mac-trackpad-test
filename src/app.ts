@@ -1,6 +1,6 @@
 import { applyI18n, getLocale, setLocale, t, isLocale, LOCALES, localeNames } from './i18n';
 import type { Capabilities } from './support';
-import { Session, buildExport } from './core/session';
+import { Session, buildExport, isDeviceType } from './core/session';
 import { mountTrail } from './panels/trail';
 import { mountGrid } from './panels/grid';
 import { mountForce } from './panels/force';
@@ -14,10 +14,17 @@ export function renderApp(root: HTMLElement, session: Session, caps: Capabilitie
         <h1 data-i18n="pageTitle">${t('pageTitle')}</h1>
         <p class="sub" data-i18n="pageSubtitle">${t('pageSubtitle')}</p>
       </div>
-      <select id="lang-select" class="lang-btn" aria-label="${t('langSelectLabel')}">
-        ${LOCALES.map((l) => `<option value="${l}">${localeNames[l]}</option>`).join('\n        ')}
-      </select>
+      <div style="display: flex; gap: 8px; flex-shrink: 0;">
+        <select id="device-select" class="lang-btn" aria-label="${t('deviceSelectLabel')}">
+          <option value="builtin" data-i18n="deviceBuiltin">${t('deviceBuiltin')}</option>
+          <option value="magic" data-i18n="deviceMagic">${t('deviceMagic')}</option>
+        </select>
+        <select id="lang-select" class="lang-btn" aria-label="${t('langSelectLabel')}">
+          ${LOCALES.map((l) => `<option value="${l}">${localeNames[l]}</option>`).join('\n          ')}
+        </select>
+      </div>
     </header>
+    <p id="device-note" class="hint" data-i18n="deviceMagicNote" hidden>${t('deviceMagicNote')}</p>
     ${caps.touchDevice ? `<div class="banner" data-i18n="touchBanner">${t('touchBanner')}</div>` : ''}
     <section id="panel-trail"></section>
     <section id="panel-grid"></section>
@@ -37,6 +44,16 @@ export function renderApp(root: HTMLElement, session: Session, caps: Capabilitie
   mountScroll(root.querySelector('#panel-scroll') as HTMLElement, session);
   mountPinch(root.querySelector('#panel-pinch') as HTMLElement, session, caps);
 
+  const deviceSelect = root.querySelector('#device-select') as HTMLSelectElement;
+  const deviceNote = root.querySelector('#device-note') as HTMLElement;
+  deviceSelect.value = session.deviceType;
+  deviceNote.hidden = session.deviceType !== 'magic'; // 初始與 session 同步（verify #3 R1）
+  deviceSelect.addEventListener('change', () => {
+    if (!isDeviceType(deviceSelect.value)) return;
+    session.deviceType = deviceSelect.value;
+    deviceNote.hidden = deviceSelect.value !== 'magic';
+  });
+
   const langSelect = root.querySelector('#lang-select') as HTMLSelectElement;
   langSelect.value = getLocale();
   langSelect.addEventListener('change', () => {
@@ -44,6 +61,7 @@ export function renderApp(root: HTMLElement, session: Session, caps: Capabilitie
     setLocale(langSelect.value);
     applyI18n(document);
     langSelect.setAttribute('aria-label', t('langSelectLabel'));
+    deviceSelect.setAttribute('aria-label', t('deviceSelectLabel'));
     document.title = t('pageTitle');
   });
 
