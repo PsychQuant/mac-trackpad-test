@@ -42,6 +42,16 @@ describe('renderApp', () => {
     expect(note.hidden).toBe(true);
   });
 
+  it('render 前已選 magic：選單與提示初始狀態同步（verify #3 R1 blocking）', () => {
+    const root = document.createElement('div');
+    document.body.appendChild(root);
+    const session = new Session();
+    session.deviceType = 'magic';
+    renderApp(root, session, { forceTouch: true, gesture: true, touchDevice: false });
+    expect((root.querySelector('#device-select') as HTMLSelectElement).value).toBe('magic');
+    expect((root.querySelector('#device-note') as HTMLElement).hidden).toBe(false);
+  });
+
   it('觸控裝置顯示 banner', () => {
     const root = document.createElement('div');
     document.body.appendChild(root);

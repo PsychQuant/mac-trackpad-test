@@ -2,9 +2,14 @@ import { deltaStats } from './stats';
 
 export type PanelId = 'trail' | 'grid' | 'force' | 'scroll' | 'pinch';
 
-// Web API 無法自動偵測觸控板型號（PointerEvent 一律回報 "mouse"），
-// 由使用者自選；影響判讀端對事件頻率上限的預期（藍牙外接板可能低於內建 120Hz）。
+// 本工具使用的標準瀏覽器輸入事件無法可靠辨識觸控板型號（PointerEvent 回報 "mouse"）；
+// WebHID / Web Bluetooth 需使用者授權且非 Safari／跨瀏覽器可用，不能作為自動偵測方案，
+// 故由使用者自選；影響判讀端對事件頻率上限的預期（藍牙外接觸控板可能低於內建 120Hz）。
 export type DeviceType = 'builtin' | 'magic';
+
+export function isDeviceType(value: string): value is DeviceType {
+  return value === 'builtin' || value === 'magic';
+}
 
 export interface JumpRecord { xPct: number; yPct: number; distPx: number }
 

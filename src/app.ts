@@ -1,6 +1,6 @@
 import { applyI18n, getLocale, setLocale, t, isLocale, LOCALES, localeNames } from './i18n';
 import type { Capabilities } from './support';
-import { Session, buildExport, type DeviceType } from './core/session';
+import { Session, buildExport, isDeviceType } from './core/session';
 import { mountTrail } from './panels/trail';
 import { mountGrid } from './panels/grid';
 import { mountForce } from './panels/force';
@@ -47,11 +47,11 @@ export function renderApp(root: HTMLElement, session: Session, caps: Capabilitie
   const deviceSelect = root.querySelector('#device-select') as HTMLSelectElement;
   const deviceNote = root.querySelector('#device-note') as HTMLElement;
   deviceSelect.value = session.deviceType;
+  deviceNote.hidden = session.deviceType !== 'magic'; // 初始與 session 同步（verify #3 R1）
   deviceSelect.addEventListener('change', () => {
-    const v = deviceSelect.value;
-    if (v !== 'builtin' && v !== 'magic') return;
-    session.deviceType = v as DeviceType;
-    deviceNote.hidden = v !== 'magic';
+    if (!isDeviceType(deviceSelect.value)) return;
+    session.deviceType = deviceSelect.value;
+    deviceNote.hidden = deviceSelect.value !== 'magic';
   });
 
   const langSelect = root.querySelector('#lang-select') as HTMLSelectElement;
