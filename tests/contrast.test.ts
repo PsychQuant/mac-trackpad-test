@@ -41,10 +41,13 @@ function extractPalettes(): { dark: Record<string, string>; light: Record<string
   return { dark: darkVars, light: { ...darkVars, ...lightOverrides } };
 }
 
-// 文字/背景配對與門檻。資訊性文字 4.5（AA）；
-// --on-accent on --blue 是 pinch 目標的裝飾性標籤（深色沿用既有設計值，
-// pre-existing 3.27，issue Expected(4) 要求深色不變 —— 例外門檻 3.0）。
-const TEXT_PAIRS: Array<{ fg: string; bg: string; min: number; note: string }> = [
+// 文字/背景配對與門檻。資訊性文字 4.5（AA）。
+// --on-accent on --blue（pinch 目標的裝飾性標籤）採 per-theme 門檻：
+// - 深色 3.0：launch 基線（main）的 .pinchtarget 無 color 屬性、繼承 body #f2f2f7，
+//   對 --blue #0a84ff = 3.27 —— pre-existing，且 issue Expected(4) 深色不變優先。
+// - 淺色 4.5：R1 blocking 修正後鎖定，不允許回退（verify R2 finding）。
+type Threshold = number | { dark: number; light: number };
+const TEXT_PAIRS: Array<{ fg: string; bg: string; min: Threshold; note: string }> = [
   { fg: '--text', bg: '--bg', min: 4.5, note: '本文 on 頁底' },
   { fg: '--text', bg: '--card', min: 4.5, note: '本文 on 卡片' },
   { fg: '--text-dim', bg: '--card', min: 4.5, note: 'hint on 卡片' },
@@ -54,7 +57,7 @@ const TEXT_PAIRS: Array<{ fg: string; bg: string; min: number; note: string }> =
   { fg: '--cell-left-text', bg: '--cell-left-bg', min: 4.5, note: '九宮格左鍵完成' },
   { fg: '--cell-both-text', bg: '--cell-both-bg', min: 4.5, note: '九宮格雙完成' },
   { fg: '--green', bg: '--card', min: 4.5, note: '.ok 狀態文字' },
-  { fg: '--on-accent', bg: '--blue', min: 3.0, note: 'pinch 目標裝飾標籤（深色 pre-existing 例外，見上）' },
+  { fg: '--on-accent', bg: '--blue', min: { dark: 3.0, light: 4.5 }, note: 'pinch 目標裝飾標籤（per-theme 門檻，見上）' },
 ];
 
 describe.each(['dark', 'light'] as const)('%s 色板 WCAG 對比', (theme) => {
@@ -64,8 +67,9 @@ describe.each(['dark', 'light'] as const)('%s 色板 WCAG 對比', (theme) => {
   it.each(TEXT_PAIRS)('$fg on $bg ≥ $min（$note）', ({ fg, bg, min }) => {
     expect(palette[fg], `${theme} 缺變數 ${fg}`).toBeDefined();
     expect(palette[bg], `${theme} 缺變數 ${bg}`).toBeDefined();
+    const threshold = typeof min === 'number' ? min : min[theme];
     const ratio = contrast(palette[fg], palette[bg]);
-    expect(ratio, `${theme}: ${fg}(${palette[fg]}) on ${bg}(${palette[bg]}) = ${ratio.toFixed(2)}`).toBeGreaterThanOrEqual(min);
+    expect(ratio, `${theme}: ${fg}(${palette[fg]}) on ${bg}(${palette[bg]}) = ${ratio.toFixed(2)}`).toBeGreaterThanOrEqual(threshold);
   });
 });
 

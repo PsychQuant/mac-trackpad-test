@@ -7,3 +7,5 @@ coverage
 
 # IDD tree-lock (idd-tree-lock.sh #183) — per-machine session state, not tracked
 .claude/.idd/tree-lock
+.claude/.idd/state/
+.claude/.idd/attachments/
