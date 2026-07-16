@@ -1,6 +1,7 @@
 import { detectStep, type Point } from '../core/jump-detector';
 import type { Session } from '../core/session';
 import { t } from '../i18n';
+import { cssColor } from '../theme';
 
 export function mountTrail(el: HTMLElement, session: Session): void {
   el.innerHTML = `
@@ -16,6 +17,9 @@ export function mountTrail(el: HTMLElement, session: Session): void {
 
   const canvas = el.querySelector('canvas') as HTMLCanvasElement;
   const ctx2d = canvas.getContext('2d'); // jsdom 回 null，繪圖跳過、邏輯照常
+  // mount 時解析一次主題色；jsdom / 舊瀏覽器退 fallback 固定色
+  const colorStroke = cssColor('--blue', '#0a84ff');
+  const colorJump = cssColor('--red', '#ff453a');
   const hzEl = el.querySelector('.hz') as HTMLElement;
   const maxJumpEl = el.querySelector('.maxjump') as HTMLElement;
   const jumpsEl = el.querySelector('.jumps') as HTMLElement;
@@ -60,7 +64,7 @@ export function mountTrail(el: HTMLElement, session: Session): void {
       jumpsEl.textContent = String(session.trail.jumps.length);
     }
     if (ctx2d && last) {
-      ctx2d.strokeStyle = step.isJump ? '#ff453a' : '#0a84ff';
+      ctx2d.strokeStyle = step.isJump ? colorJump : colorStroke;
       ctx2d.beginPath();
       ctx2d.moveTo(last.x, last.y);
       ctx2d.lineTo(curr.x, curr.y);
