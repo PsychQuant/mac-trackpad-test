@@ -1,4 +1,4 @@
-import { applyI18n, getLocale, setLocale, t, type Locale } from './i18n';
+import { applyI18n, getLocale, setLocale, t, isLocale, LOCALES, localeNames } from './i18n';
 import type { Capabilities } from './support';
 import { Session, buildExport } from './core/session';
 import { mountTrail } from './panels/trail';
@@ -15,9 +15,7 @@ export function renderApp(root: HTMLElement, session: Session, caps: Capabilitie
         <p class="sub" data-i18n="pageSubtitle">${t('pageSubtitle')}</p>
       </div>
       <select id="lang-select" class="lang-btn" aria-label="${t('langSelectLabel')}">
-        <option value="zh-TW">中文</option>
-        <option value="en">English</option>
-        <option value="ja">日本語</option>
+        ${LOCALES.map((l) => `<option value="${l}">${localeNames[l]}</option>`).join('\n        ')}
       </select>
     </header>
     ${caps.touchDevice ? `<div class="banner" data-i18n="touchBanner">${t('touchBanner')}</div>` : ''}
@@ -42,7 +40,8 @@ export function renderApp(root: HTMLElement, session: Session, caps: Capabilitie
   const langSelect = root.querySelector('#lang-select') as HTMLSelectElement;
   langSelect.value = getLocale();
   langSelect.addEventListener('change', () => {
-    setLocale(langSelect.value as Locale);
+    if (!isLocale(langSelect.value)) return; // options 由 LOCALES 生成，此守衛防未來 DOM 漂移
+    setLocale(langSelect.value);
     applyI18n(document);
     langSelect.setAttribute('aria-label', t('langSelectLabel'));
     document.title = t('pageTitle');

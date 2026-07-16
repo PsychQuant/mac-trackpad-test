@@ -1,5 +1,6 @@
 import { renderApp } from '../src/app';
 import { Session } from '../src/core/session';
+import { setLocale } from '../src/i18n';
 
 afterEach(() => { document.body.innerHTML = ''; });
 
@@ -13,6 +14,7 @@ describe('renderApp', () => {
     const select = root.querySelector('#lang-select') as HTMLSelectElement;
     expect(select).not.toBeNull();
     expect([...select.options].map((o) => o.value)).toEqual(['zh-TW', 'en', 'ja']);
+    expect([...select.options].map((o) => o.textContent)).toEqual(['繁體中文', 'English', '日本語']);
     expect(root.querySelectorAll('.notice-card')).toHaveLength(2);
     expect(session.skipped.sort()).toEqual(['force', 'pinch']);
   });
@@ -25,6 +27,7 @@ describe('renderApp', () => {
   });
 
   it('語言選單切換換字（en 與 ja）', () => {
+    setLocale('zh-TW'); // 固定起點，消除測試順序依賴（verify R1 加固）
     const root = document.createElement('div');
     document.body.appendChild(root);
     renderApp(root, new Session(), { forceTouch: true, gesture: true, touchDevice: false });

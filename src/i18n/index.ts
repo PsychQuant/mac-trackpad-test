@@ -1,12 +1,14 @@
-import { strings, type Locale, type Strings } from './strings';
+import { strings, LOCALES, type Locale, type Strings } from './strings';
 
 const STORAGE_KEY = 'mac-trackpad-test-lang';
 let current: Locale = 'zh-TW';
 
-const SUPPORTED: readonly Locale[] = ['zh-TW', 'en', 'ja'];
+export function isLocale(value: string): value is Locale {
+  return (LOCALES as readonly string[]).includes(value);
+}
 
 export function detectLocale(navLang: string, stored: string | null): Locale {
-  if (stored && (SUPPORTED as readonly string[]).includes(stored)) return stored as Locale;
+  if (stored && isLocale(stored)) return stored;
   const lang = navLang.toLowerCase();
   if (lang.startsWith('zh')) return 'zh-TW';
   if (lang.startsWith('ja')) return 'ja';
@@ -42,4 +44,4 @@ export function applyI18n(root: ParentNode): void {
   });
 }
 
-export { strings, type Locale, type Strings };
+export { strings, LOCALES, localeNames, type Locale, type Strings } from './strings';

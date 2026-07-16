@@ -1,4 +1,14 @@
-export type Locale = 'zh-TW' | 'en' | 'ja';
+// 單一事實來源：新增語言只在此檔動三處（LOCALES、localeNames、strings 字典），
+// Locale type、偵測白名單、選單 options 全部由此派生（verify #2 R1 收斂 finding）。
+export const LOCALES = ['zh-TW', 'en', 'ja'] as const;
+export type Locale = (typeof LOCALES)[number];
+
+// 選單顯示用的語言原生名（以各語言自身書寫，i18n 慣例，不隨介面語言翻譯）
+export const localeNames: Record<Locale, string> = {
+  'zh-TW': '繁體中文',
+  en: 'English',
+  ja: '日本語'
+};
 
 export interface Strings {
   pageTitle: string; pageSubtitle: string; langSelectLabel: string; touchBanner: string;
@@ -81,8 +91,8 @@ export const strings: Record<Locale, Strings> = {
     langSelectLabel: '言語',
     touchBanner: 'このツールは Mac のトラックパッド検査用です。Mac の Safari で開いてください。',
     trailTitle: '1. 軌跡テスト — デッドゾーンとカーソル飛び',
-    trailHint: '指1本でトラックパッド全面をまんべんなくなぞってください。線は連続して滑らかなはずです：途切れ＝デッドゾーン。赤い線分＝速度異常（1ステップが50px超かつ直前の3倍以上）——素早いスワイプは誤検出されません。赤が出たら、カーソルが滑らかな動きから突然瞬間移動した証拠です。',
-    hzLabel: 'イベントレート', maxJumpLabel: '最大ステップ', jumpCountLabel: '異常', clearBtn: 'クリア',
+    trailHint: '指1本でトラックパッド全面をまんべんなくなぞってください。線は連続して滑らかなはずです：途切れ＝デッドゾーン。赤い線分＝速度異常（1回の移動量が50pxを超え、直前の3倍以上）——素早いスワイプは誤検出されません。赤が出たら、カーソルが突然飛んだ証拠です。',
+    hzLabel: 'イベントレート', maxJumpLabel: '最大移動量', jumpCountLabel: '異常数', clearBtn: 'クリア',
     gridTitle: '2. 3×3 クリックグリッド — 四隅までクリック確認',
     gridHint: '9マスすべてを左クリック（緑に変化）、次に右クリック／2本指クリック（青に変化）してください。反応しないマス＝そのゾーンのスイッチまたはセンサー異常。',
     leftLabel: '左', rightLabel: '右', dblLabel: 'ダブルクリック',
@@ -90,16 +100,16 @@ export const strings: Record<Locale, Strings> = {
     forceTitle: '3. Force Touch 感圧',
     forceHint: '下のバーを押したまま、徐々に力を加えてください：バーは滑らかに上昇し、白線を超えると強めのクリック（触覚フィードバック）が発動します。数値が飛ぶ、または白線に届かない場合＝感圧レイヤーの異常。',
     forceNowLabel: '現在', forceMaxLabel: '最大', forceClickLabel: '強めのクリック',
-    forceClickDone: '発動 ✓', forceClickPending: '未発動',
+    forceClickDone: '作動 ✓', forceClickPending: '未検出',
     scrollTitle: '4. 2本指スクロール — 滑らかさと慣性',
     scrollHint: 'ボックス内を2本指で上下にスクロールし、指を離して慣性で流れるのを確認してください。指に追従し、滑らかに減速するはずです。',
     scrollLine: '— 滑らかにスクロール', dyLabel: '現在 ΔY', wheelCountLabel: 'イベント数',
     pinchTitle: '5. ピンチズームと回転',
-    pinchHint: '青い正方形の上で2本指のピンチイン／ピンチアウト・回転をしてください。リアルタイムに追従すれば、各指が独立してトラッキングされている証拠です。',
+    pinchHint: '青い正方形の上で2本指のピンチイン／ピンチアウトや回転を行ってください。リアルタイムに追従すれば、各指が独立してトラッキングされている証拠です。',
     pinchTarget: '2本指', scaleLabel: '拡大率', rotationLabel: '回転',
     exportTitle: '6. 結果のエクスポート',
-    exportHint: '5つのチェックを終えたら下のボタンを押してください：結果がクリップボードにコピーされ（JSON もダウンロード）、AI や技術者に貼り付けて判定してもらえます。',
-    exportBtn: '結果をコピー', exportCopied: 'コピーしました ✓', exportCopyFailed: 'クリップボード失敗 — ダウンロードしました',
+    exportHint: '5つのチェックを終えたら下のボタンを押してください：結果がクリップボードにコピーされ（JSON もダウンロード）、AI や技術者に共有して判定してもらえます。',
+    exportBtn: '結果をコピー', exportCopied: 'コピーしました ✓', exportCopyFailed: 'クリップボードへのコピーに失敗 — ダウンロードしました',
     needSafariTitle: 'Safari が必要です',
     needSafariForce: '感圧センサーは Safari 専用の webkitForce イベントを使用します。Chrome/Firefox ではこのチェックは実行できません。他のチェックは利用できます。',
     needSafariPinch: 'ピンチジェスチャーは Safari 専用の GestureEvent を使用します。Chrome/Firefox ではこのチェックは実行できません。他のチェックは利用できます。'
