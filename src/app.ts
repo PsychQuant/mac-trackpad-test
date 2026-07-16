@@ -1,4 +1,4 @@
-import { applyI18n, getLocale, setLocale, t } from './i18n';
+import { applyI18n, getLocale, setLocale, t, type Locale } from './i18n';
 import type { Capabilities } from './support';
 import { Session, buildExport } from './core/session';
 import { mountTrail } from './panels/trail';
@@ -14,7 +14,11 @@ export function renderApp(root: HTMLElement, session: Session, caps: Capabilitie
         <h1 data-i18n="pageTitle">${t('pageTitle')}</h1>
         <p class="sub" data-i18n="pageSubtitle">${t('pageSubtitle')}</p>
       </div>
-      <button id="lang-toggle" class="lang-btn" data-i18n="langToggle">${t('langToggle')}</button>
+      <select id="lang-select" class="lang-btn" aria-label="${t('langSelectLabel')}">
+        <option value="zh-TW">中文</option>
+        <option value="en">English</option>
+        <option value="ja">日本語</option>
+      </select>
     </header>
     ${caps.touchDevice ? `<div class="banner" data-i18n="touchBanner">${t('touchBanner')}</div>` : ''}
     <section id="panel-trail"></section>
@@ -35,9 +39,12 @@ export function renderApp(root: HTMLElement, session: Session, caps: Capabilitie
   mountScroll(root.querySelector('#panel-scroll') as HTMLElement, session);
   mountPinch(root.querySelector('#panel-pinch') as HTMLElement, session, caps);
 
-  (root.querySelector('#lang-toggle') as HTMLButtonElement).addEventListener('click', () => {
-    setLocale(getLocale() === 'zh-TW' ? 'en' : 'zh-TW');
+  const langSelect = root.querySelector('#lang-select') as HTMLSelectElement;
+  langSelect.value = getLocale();
+  langSelect.addEventListener('change', () => {
+    setLocale(langSelect.value as Locale);
     applyI18n(document);
+    langSelect.setAttribute('aria-label', t('langSelectLabel'));
     document.title = t('pageTitle');
   });
 
