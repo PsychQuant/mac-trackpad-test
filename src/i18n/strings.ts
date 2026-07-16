@@ -1,7 +1,17 @@
-export type Locale = 'zh-TW' | 'en';
+// 單一事實來源：新增語言只在此檔動三處（LOCALES、localeNames、strings 字典），
+// Locale type、偵測白名單、選單 options 全部由此派生（verify #2 R1 收斂 finding）。
+export const LOCALES = ['zh-TW', 'en', 'ja'] as const;
+export type Locale = (typeof LOCALES)[number];
+
+// 選單顯示用的語言原生名（以各語言自身書寫，i18n 慣例，不隨介面語言翻譯）
+export const localeNames: Record<Locale, string> = {
+  'zh-TW': '繁體中文',
+  en: 'English',
+  ja: '日本語'
+};
 
 export interface Strings {
-  pageTitle: string; pageSubtitle: string; langToggle: string; touchBanner: string;
+  pageTitle: string; pageSubtitle: string; langSelectLabel: string; touchBanner: string;
   trailTitle: string; trailHint: string;
   hzLabel: string; maxJumpLabel: string; jumpCountLabel: string; clearBtn: string;
   gridTitle: string; gridHint: string;
@@ -20,7 +30,7 @@ export const strings: Record<Locale, Strings> = {
   'zh-TW': {
     pageTitle: 'Mac 觸控板健康檢查',
     pageSubtitle: '依序做完五關。每一關都在測觸控板的一種故障模式（死區、微動開關、壓力感應、慣性捲動、多指手勢）。',
-    langToggle: 'EN',
+    langSelectLabel: '介面語言',
     touchBanner: '本工具供 Mac 觸控板檢測，請在 Mac 上用 Safari 開啟。',
     trailTitle: '1. 軌跡測試 — 找死區與跳動',
     trailHint: '單指掃滿整個觸控板表面，來回蓋滿。畫出的線應該連續平滑：斷線 = 死區。紅色線段 = 速度突變異常（這一步超過 50px 且是前一步的 3 倍以上）——快滑不會誤標，出現紅色代表游標從平順移動中突然瞬移。',
@@ -49,7 +59,7 @@ export const strings: Record<Locale, Strings> = {
   en: {
     pageTitle: 'Mac Trackpad Test',
     pageSubtitle: 'Run all five checks. Each targets one trackpad failure mode (dead zones, click switches, pressure sensing, inertial scrolling, multi-finger gestures).',
-    langToggle: '中文',
+    langSelectLabel: 'Language',
     touchBanner: 'This tool checks Mac trackpads — please open it in Safari on a Mac.',
     trailTitle: '1. Trail — dead zones & cursor jumps',
     trailHint: 'Sweep one finger across the whole trackpad surface until covered. The line should be continuous and smooth: a gap = dead zone. Red segments = velocity anomalies (a step over 50px and 3× the previous step) — fast swipes are not flagged; red means the cursor teleported mid-motion.',
@@ -74,5 +84,34 @@ export const strings: Record<Locale, Strings> = {
     needSafariTitle: 'Safari required',
     needSafariForce: 'Pressure sensing uses Safari-only webkitForce events; Chrome/Firefox cannot run this check. Other checks still work.',
     needSafariPinch: 'Pinch gestures use Safari-only GestureEvent; Chrome/Firefox cannot run this check. Other checks still work.'
+  },
+  ja: {
+    pageTitle: 'Mac トラックパッド健康チェック',
+    pageSubtitle: '5つのチェックを順番に行ってください。それぞれがトラックパッドの故障モード（デッドゾーン、クリックスイッチ、感圧センサー、慣性スクロール、マルチタッチジェスチャー）を検査します。',
+    langSelectLabel: '言語',
+    touchBanner: 'このツールは Mac のトラックパッド検査用です。Mac の Safari で開いてください。',
+    trailTitle: '1. 軌跡テスト — デッドゾーンとカーソル飛び',
+    trailHint: '指1本でトラックパッド全面をまんべんなくなぞってください。線は連続して滑らかなはずです：途切れ＝デッドゾーン。赤い線分＝速度異常（1回の移動量が50pxを超え、直前の3倍以上）——素早いスワイプは誤検出されません。赤が出たら、カーソルが突然飛んだ証拠です。',
+    hzLabel: 'イベントレート', maxJumpLabel: '最大移動量', jumpCountLabel: '異常数', clearBtn: 'クリア',
+    gridTitle: '2. 3×3 クリックグリッド — 四隅までクリック確認',
+    gridHint: '9マスすべてを左クリック（緑に変化）、次に右クリック／2本指クリック（青に変化）してください。反応しないマス＝そのゾーンのスイッチまたはセンサー異常。',
+    leftLabel: '左', rightLabel: '右', dblLabel: 'ダブルクリック',
+    dblPass: '合格', dblPending: '未実施（任意のマスをダブルクリック）',
+    forceTitle: '3. Force Touch 感圧',
+    forceHint: '下のバーを押したまま、徐々に力を加えてください：バーは滑らかに上昇し、白線を超えると強めのクリック（触覚フィードバック）が発動します。数値が飛ぶ、または白線に届かない場合＝感圧レイヤーの異常。',
+    forceNowLabel: '現在', forceMaxLabel: '最大', forceClickLabel: '強めのクリック',
+    forceClickDone: '作動 ✓', forceClickPending: '未検出',
+    scrollTitle: '4. 2本指スクロール — 滑らかさと慣性',
+    scrollHint: 'ボックス内を2本指で上下にスクロールし、指を離して慣性で流れるのを確認してください。指に追従し、滑らかに減速するはずです。',
+    scrollLine: '— 滑らかにスクロール', dyLabel: '現在 ΔY', wheelCountLabel: 'イベント数',
+    pinchTitle: '5. ピンチズームと回転',
+    pinchHint: '青い正方形の上で2本指のピンチイン／ピンチアウトや回転を行ってください。リアルタイムに追従すれば、各指が独立してトラッキングされている証拠です。',
+    pinchTarget: '2本指', scaleLabel: '拡大率', rotationLabel: '回転',
+    exportTitle: '6. 結果のエクスポート',
+    exportHint: '5つのチェックを終えたら下のボタンを押してください：結果がクリップボードにコピーされ（JSON もダウンロード）、AI や技術者に共有して判定してもらえます。',
+    exportBtn: '結果をコピー', exportCopied: 'コピーしました ✓', exportCopyFailed: 'クリップボードへのコピーに失敗 — ダウンロードしました',
+    needSafariTitle: 'Safari が必要です',
+    needSafariForce: '感圧センサーは Safari 専用の webkitForce イベントを使用します。Chrome/Firefox ではこのチェックは実行できません。他のチェックは利用できます。',
+    needSafariPinch: 'ピンチジェスチャーは Safari 専用の GestureEvent を使用します。Chrome/Firefox ではこのチェックは実行できません。他のチェックは利用できます。'
   }
 };

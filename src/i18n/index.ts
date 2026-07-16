@@ -1,11 +1,18 @@
-import { strings, type Locale, type Strings } from './strings';
+import { strings, LOCALES, type Locale, type Strings } from './strings';
 
 const STORAGE_KEY = 'mac-trackpad-test-lang';
 let current: Locale = 'zh-TW';
 
+export function isLocale(value: string): value is Locale {
+  return (LOCALES as readonly string[]).includes(value);
+}
+
 export function detectLocale(navLang: string, stored: string | null): Locale {
-  if (stored === 'zh-TW' || stored === 'en') return stored;
-  return navLang.toLowerCase().startsWith('zh') ? 'zh-TW' : 'en';
+  if (stored && isLocale(stored)) return stored;
+  const lang = navLang.toLowerCase();
+  if (lang.startsWith('zh')) return 'zh-TW';
+  if (lang.startsWith('ja')) return 'ja';
+  return 'en';
 }
 
 // localStorage 在無痕模式（舊 Safari）可能拋錯、在部分測試環境不存在——一律防禦性存取。
@@ -37,4 +44,4 @@ export function applyI18n(root: ParentNode): void {
   });
 }
 
-export { strings, type Locale, type Strings };
+export { strings, LOCALES, localeNames, type Locale, type Strings } from './strings';

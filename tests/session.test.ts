@@ -42,6 +42,11 @@ describe('Session / buildExport', () => {
     expect(out['手勢']['最後縮放']).toBe(2.28);
   });
 
+  it('language 欄位跟隨 meta（ja 案例，verify R1 覆蓋缺口）', () => {
+    const out = buildExport(new Session(), { ...META, language: 'ja' }) as Record<string, any>;
+    expect(out['language']).toBe('ja');
+  });
+
   it('skipped 清單：重複標記去重', () => {
     const s = new Session();
     s.markSkipped('force'); s.markSkipped('pinch'); s.markSkipped('force');
