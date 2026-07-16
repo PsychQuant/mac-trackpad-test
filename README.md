@@ -18,6 +18,8 @@
 
 做完按「複製測試結果」，JSON 會複製到剪貼簿（並下載備份），可貼給 AI 或維修人員判讀。
 
+介面深淺主題自動跟隨系統外觀（`prefers-color-scheme`），深色為預設設計、淺色完整支援。
+
 ### 判讀基準
 
 - 事件頻率：健康值約 90–120 Hz（120 為硬體上限）
@@ -49,6 +51,8 @@ Five interactive checks covering the five failure modes of a MacBook trackpad. T
 | 5. Pinch gestures | Independent multi-finger tracking | Square follows zoom/rotate in real time |
 
 When done, press "Copy results": a JSON report is copied to the clipboard (and downloaded) — paste it to an AI or a technician.
+
+The UI follows your system appearance automatically (`prefers-color-scheme`) — dark is the primary design, light fully supported.
 
 ### Interpretation baseline
 
